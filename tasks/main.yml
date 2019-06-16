@@ -1,0 +1,48 @@
+---
+- name: resolve platform specific vars
+  include_vars: '{{ item }}'
+  with_first_found:
+    - files:
+        - '{{ ansible_distribution }}-{{ ansible_distribution_release }}.yml'
+        - '{{ ansible_distribution }}.yml'
+        - '{{ ansible_os_family }}.yml'
+      skip: true
+      paths:
+        - '{{ role_path }}/vars'
+- name: check for install
+  become: yes
+  stat:
+    path: '{{ systemml_install_dir }}'
+  changed_when: False
+  register: systemml_binary_dir
+- when: not systemml_binary_dir.stat.exists
+  block:
+    - name: download tgz
+      become: yes
+      become_user: root
+      get_url:
+        url: '{{ systemml_tgz_url }}'
+        dest: /tmp/{{ systemml_tgz }}
+        mode: 0644
+    - name: unarchive
+      become: yes
+      become_user: root
+      unarchive:
+        remote_src: yes
+        src: /tmp/{{ systemml_tgz }}
+        dest: '{{ systemml_parent_install_dir }}'
+        creates: '{{ systemml_install_dir }}'
+  always:
+    - name: delete tgz
+      become: yes
+      become_user: root
+      file:
+        path: /tmp/{{ systemml_tgz }}
+        state: absent
+- name: link
+  become: yes
+  become_user: root
+  file:
+    src: '{{ systemml_install_dir }}'
+    dest: '{{ systemml_link_dir }}'
+    state: link

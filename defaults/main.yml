@@ -1,0 +1,9 @@
+---
+# defaults file for systemml
+systemml_ver: '1.2.0'
+systemml_mirror: https://www.apache.org/dist/systemml
+systemml_checksums:
+  # https://www.apache.org/dist/systemml/1.2.0/systemml-1.2.0-bin.tgz.sha512
+  1.2.0: sha512:4262fa40a6383525fd47b4afc6f9f17573eb6587b544be6d8a77f0a76f9a707f9159db4be4d2fc75bed1bff530728b480f116eaa41d836c1c56a66570296c043
+
+systemml_parent_install_dir: /usr/local

@@ -1,0 +1,9 @@
+---
+# vars file for systemml
+systemml_name: systemml-{{ systemml_ver }}-bin
+systemml_tgz: '{{ systemml_name }}.tgz'
+systemml_tgz_url: '{{ systemml_mirror }}/{{ systemml_ver }}/{{ systemml_tgz }}'
+systemml_checksum: '{{ systemml_checksums[systemml_ver] }}'
+
+systemml_install_dir: '{{ systemml_parent_install_dir }}/{{ systemml_name }}'
+systemml_link_dir: '{{ systemml_parent_install_dir }}/systemml-bin'
